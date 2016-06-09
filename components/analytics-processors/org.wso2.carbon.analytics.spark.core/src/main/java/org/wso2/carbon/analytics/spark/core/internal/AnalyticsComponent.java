@@ -24,8 +24,10 @@ import org.osgi.service.component.ComponentContext;
 import org.wso2.carbon.analytics.dataservice.core.AnalyticsDataService;
 import org.wso2.carbon.analytics.spark.core.AnalyticsProcessorService;
 import org.wso2.carbon.analytics.spark.core.CarbonAnalyticsProcessorService;
+import org.wso2.carbon.analytics.spark.core.SparkContextServiceImpl;
 import org.wso2.carbon.analytics.spark.core.SparkScriptCAppDeployer;
 import org.wso2.carbon.analytics.spark.core.exception.AnalyticsUDFException;
+import org.wso2.carbon.analytics.spark.core.interfaces.SparkContextService;
 import org.wso2.carbon.analytics.spark.core.sources.AnalyticsIncrementalMetaStore;
 import org.wso2.carbon.analytics.spark.core.udf.CarbonUDF;
 import org.wso2.carbon.analytics.spark.core.util.AnalyticsConstants;
@@ -87,6 +89,9 @@ public class AnalyticsComponent {
             SparkScriptCAppDeployer sparkScriptCAppDeployer = new SparkScriptCAppDeployer();
             bundleContext.registerService(
                     AppDeploymentHandler.class.getName(), sparkScriptCAppDeployer, null);
+            // registering spark context service
+            SparkContextService scs = new SparkContextServiceImpl();
+            bundleContext.registerService(SparkContextService.class, scs, null);
 
             if (log.isDebugEnabled()) {
                 log.debug("Finished activating Analytics Spark Core");

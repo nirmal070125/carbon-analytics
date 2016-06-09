@@ -98,6 +98,8 @@ public class SparkAnalyticsExecutor implements GroupEventListener {
 
     private SparkConf sparkConf;
 
+    private JavaSparkContext jsc;
+    
     private SQLContext sqlCtx;
 
     private String myHost;
@@ -342,7 +344,6 @@ public class SparkAnalyticsExecutor implements GroupEventListener {
     }
 
     private JavaSparkContext initializeSparkContext(SparkConf conf) throws AnalyticsException {
-        JavaSparkContext jsc = null;
         try {
             jsc = new JavaSparkContext(conf);
         } catch (Exception e) {
@@ -351,7 +352,7 @@ public class SparkAnalyticsExecutor implements GroupEventListener {
             }
             throw new AnalyticsException("Unable to create analytics client. " + e.getMessage(), e);
         }
-
+        ServiceHolder.setJavaSparkContext(jsc);
         return jsc;
     }
 
